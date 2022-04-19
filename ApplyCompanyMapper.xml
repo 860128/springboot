@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.xakr.mybatis.mapper.ApplyCompanyMapper">
+
+    <select id="loadApplyCompanyListCount" resultType="java.lang.Integer"
+            parameterType="com.xakr.controller.applyCompany.params.ApplyCompanyParam">
+        select
+            count(auto_id)
+        from
+            apply_company
+        <where>
+            <if test="companyName != null and companyName != ''" >
+                company_name LIKE CONCAT('%',#{companyName},'%')
+            </if>
+            <if test="societyCode != null and societyCode != ''" >
+                and society_code LIKE CONCAT('%',#{societyCode},'%')
+            </if>
+            <if test="registerPhone != null and registerPhone != ''" >
+                and register_phone LIKE CONCAT('%',#{registerPhone},'%')
+            </if>
+        </where>
+    </select>
+    <!--    如果接口方法的参数为单个字符变量时-->
+    <!--    ${}字符串拼接，#{}占位符 用于接收参数 {}可以任意写，但是推荐使用参数名，${}使用需要手动加上单引号写成'${}',#{}不需要-->
+<!--查询必须要有resultType或者resultmap，一个是默认映射，一个是自定义映射-->
+<!--    resultType要求类的属性名要和字段名保持一致，resultmap则是名称不一样或者有多对一和一对多的关系-->
+<!--    LIKE CONCAT('%',#{companyName},'%')是模糊查询，类似select * from apply_company where company——name like‘% 占位符%’-->
+<!--mapper有多个参数时，系统会以arg0，arg1或者param1，param2存参数数据，使用${}和#{}传参数
+就用arg0,或者arg1 两种数组可以混用-->
+<!--若mapper接口方法的参数有多个时，可以手动将这些参数放在一个接口里自定义的map中存储,在到.xml文件中使用${}和#{}传参数调用-->
+<!--若mapper接口方法的参数是一个实体类类型-->
+<!--以#{}和${}以属性的方法访问值即可，但是需要注意${}的单引号问题。 注意一点属性看到是get和set方法而不是成员变量 28-->
+<!--或者使用@Parm注解命名参数-->
+<!--    此时Mybatis会将这些参数放到一个map集合中，以两种方法进行存储。-->
+<!--    以@Param注解的值为键，以参数为值-->
+    <select id="loadApplyCompanyList" resultType="com.xakr.mybatis.model.ApplyCompany"
+            parameterType="com.xakr.controller.applyCompany.params.ApplyCompanyParam">
+        select
+            *
+        from
+            apply_company
+        <where>
+            <if test="companyName != null and companyName != ''" >
+                company_name LIKE CONCAT('%',#{companyName},'%')
+            </if>
+            <if test="societyCode != null and societyCode != ''" >
+                and society_code LIKE CONCAT('%',#{societyCode},'%')
+            </if>
+            <if test="registerPhone != null and registerPhone != ''" >
+                and register_phone LIKE CONCAT('%',#{registerPhone},'%')
+            </if>
+        </where>
+        order by auto_id desc
+        LIMIT #{startIndex,jdbcType=INTEGER} ,#{pageSize,jdbcType=INTEGER}
+    </select>
+
+</mapper>
+
+<!--只找到mapper.xml的查询操作，增删没有？-->
