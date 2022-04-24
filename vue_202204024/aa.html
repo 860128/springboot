@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+            <div>{{personNum}}</div>
+			<div>{{message}}</div><!--直接取值-->
+			<div>{{message}},我爱你</div><!--取值加上固定的一些值-->
+			<div>{{province}}{{city}}</div><!--简单字符串拼接-->
+			<div>{{province}}    {{city}}</div><!--字符串拼接中间加空格 方式1-->
+			<div>{{province+' '+city}}</div><!--字符串拼接中间加空格 方式2-->
+            
+            <div>{{ calcNum(personNum)}}</div><!--数量运算*2-->
+			<div>{{personNum++}}</div>数量运算 自增
+            <div>{{personNum++}}</div>数量运算 自增
+            <div>{{personNum++}}</div>数量运算 自增
+           
+		</div>
+	</body>
+</html>
+<script>
+	const app = new Vue({
+	//	el:document.querySelector('#app'),//传入的Element，和直接传入#app是一样的
+		el:"#app",
+		data:{
+			"message":"娃儿瑞",
+			"province":"湖南省",
+			"city":"长沙市",
+			"personNum":50
+		},
+		methods:{
+            calcNum(num){
+                return num *2
+            }
+		},
+		beforeCreate:function(){
+			console.log("我是创建前执行的");
+		},
+		created:function(){
+			console.log("我是创建后执行的");
+		}
+	});
+</script>
+
